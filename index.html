@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+
+    }
+
+    body,
+    html {
+        width: 100%;
+        height: 200vh;
+        font-family: monospace;
+    }
+
+    #container {
+        text-align: center;
+        background-color: #212121;
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: whitesmoke;
+
+    }
+
+    #container div {
+        margin: 1rem;
+        display: inline-block;
+    }
+
+    #box-container {
+        background: rgb(230, 176, 70);
+        padding: 1rem;
+        /* border-bottom: #212121 2px solid; */
+    }
+    
+    div[contenteditable=true]{
+        padding: 3px;
+    }
+    .box {
+        width: 50px;
+        height: 50px;
+        background-color: rgb(240, 248, 248);
+        display: grid;
+        place-content: center;
+        margin: 1rem;
+        padding: 5px;
+        border-radius: 5px;
+        border: hsl(182, 25%, 80%) 2px solid;
+        transition: 0.6s ease-in-out;
+    }
+
+    .animate {
+        animation: wiggle 1s infinite;
+    }
+
+    @keyframes wiggle {
+        40% {
+            transform: scale(0.95, 0.95);
+        }
+
+        80% {
+            transform: scale(1.1, 1.1);
+        }
+    }
+</style>
+
+<body>
+    <div id="container">
+
+        Position:<div contenteditable="true">sticky</div>;<br>
+        Top:<div contenteditable="true">10px</div>;<br>
+        Left:<div contenteditable="true">40%</div>;<br>
+        Parent-Position:<div contenteditable="true">static</div>;
+
+        <hr>
+        <br>
+    </div>
+
+    <div id="box-container"></div>
+
+    <script>
+        window.onload = () => {
+            const boxContainer = document.querySelector('#box-container')
+            const selectors = document.querySelectorAll('[contenteditable]')
+            let cards = 10
+            for (let i = 0; i < cards; i++) {
+                boxContainer.innerHTML += `<div class="box" id="card-${i}">card ${i}</div>`
+            }
+
+
+            let elemContainer = []
+            const box = document.querySelectorAll('.box')
+
+            for (let i = 0; i < cards; i++) {
+                box[i].onclick = () => {
+                    for (let j = 0; j < cards; j++) {
+                        box[j].classList.remove('animate')
+                  
+                    }
+                    elemContainer = box[i]
+        
+                    box[i].classList.add('animate')
+                    box[i].style = `position:${selectors[0].innerHTML};top:${selectors[1].innerHTML};left:${selectors[2].innerHTML};z-index:9;`
+                }
+            }
+
+
+            for (let i = 0; i < selectors.length; i++) {
+                selectors[i].oninput = () => {
+                    
+                        boxContainer.style = `position:${selectors[3].innerHTML}`
+                    elemContainer.style = `position:${selectors[0].innerHTML};top:${selectors[1].innerHTML};left:${selectors[2].innerHTML};z-index:9;`
+                }
+
+            }
+
+        }
+    </script>
+</body>
+
+</html>
